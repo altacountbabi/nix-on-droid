@@ -13,9 +13,16 @@
 let
   buildRootDirectory = "root-directory";
 
+  # https://github.com/NixOS/nixpkgs/pull/471845
+  staticNix = pkgsStatic.nix.overrideScope (_: _: {
+    libblake3 = pkgsStatic.libblake3.override { useTBB = false; };
+  });
+  # nix-cli is not exposed externally, hacking around it
+  staticNixCli = "$(dirname $(dirname $(readlink ${staticNix}/bin/nix)))";
+
   prootCommand = lib.concatStringsSep " " [
     "${proot}/bin/proot"
-    "-b ${pkgsStatic.nix}:/static-nix"
+    "-b ${staticNixCli}:/static-nix"
     "-b /proc:/proc" # needed because tries to access /proc/self/exe
     "-r ${buildRootDirectory}"
     "-w /"
