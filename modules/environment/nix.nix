@@ -13,12 +13,10 @@
 }:
 
 with lib;
-
 let
   cfg = config.nix;
   renameNixOpt = old: new: (mkRenamedOptionModule [ "nix" old ] [ "nix" new ]);
 in
-
 {
   # Backward-compatibility with the NixOS options.
   imports = [
@@ -27,10 +25,7 @@ in
     (renameNixOpt "extraConfig" "extraOptions")
   ];
 
-  ###### interface
-
   options = {
-
     nix = {
       package = mkOption {
         type = types.package;
@@ -149,10 +144,7 @@ in
         description = "Extra config to be appended to <filename>/etc/nix/nix.conf</filename>.";
       };
     };
-
   };
-
-  ###### implementation
 
   config = mkMerge [
     {
@@ -186,5 +178,4 @@ in
       environment.sessionVariables.NIX_PATH = concatStringsSep ":" cfg.nixPath;
     })
   ];
-
 }

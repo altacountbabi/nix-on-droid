@@ -16,11 +16,7 @@ let
   };
 in
 {
-
-  ###### interface
-
   options.android-integration = {
-
     am.enable = lib.mkOption {
       type = lib.types.bool;
       default = false;
@@ -115,10 +111,7 @@ in
         For testing and for brave souls only.
       '';
     };
-
   };
-
-  ###### implementation
 
   config =
     let

@@ -1,12 +1,10 @@
 # Copyright (c) 2019-2024, see AUTHORS. Licensed under MIT License, see LICENSE.
 
 {
-  targetSystem ? builtins.currentSystem,
-  # system to compile for
+  targetSystem ? builtins.currentSystem, # system to compile for
   config ? null,
   extraSpecialArgs ? { },
   pkgs ? import <nixpkgs> { },
-  home-manager-path ? <home-manager>,
   isFlake ? false,
 }:
 
@@ -27,7 +25,6 @@ let
   nodModules = import ./module-list.nix {
     inherit
       pkgs
-      home-manager-path
       isFlake
       targetSystem
       ;

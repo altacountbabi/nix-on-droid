@@ -6,17 +6,13 @@
 #  licensed under MIT License as well)
 
 {
-  config,
   lib,
   pkgs,
-  isFlake,
   ...
 }:
 
 with lib;
-
 let
-
   isConfig = x: builtins.isAttrs x || builtins.isFunction x;
 
   optCall = f: x: if builtins.isFunction f then f x else f;
@@ -59,13 +55,8 @@ let
     merge = lib.mergeOneOption;
   };
 in
-
 {
-
-  ###### interface
-
   options = {
-
     nixpkgs = {
       config = mkOption {
         default = null;
@@ -99,20 +90,7 @@ in
           { pkgs, config, ...}:
 
           {
-            # for Nix-on-Droid
             nixpkgs.config = import ./nixpkgs-config.nix;
-
-            # for Home Manager
-            home-manager.config.nixpkgs.config = import ./nixpkgs-config.nix;
-            # -or-
-            home-manager.config =
-              { pkgs, ... }:
-              {
-                # for Home Manager
-                nixpkgs.config = import ./nixpkgs-config.nix;
-                # for commands like nix-env
-                xdg.configFile."nixpkgs/config.nix".source = ./nixpkgs-config.nix;
-              };
           }
           </programlisting>
 
@@ -157,13 +135,9 @@ in
         '';
       };
     };
-
   };
 
-  ###### implementation
-
   config = {
-
     # assertions = [
     #   {
     #     assertion = isFlake -> config.nixpkgs.config == null && (config.nixpkgs.overlays == null || config.nixpkgs.overlays == [ ]);
@@ -171,6 +145,5 @@ in
     #       + "outputs and pass in the necessary nixpkgs object.";
     #   }
     # ];
-
   };
 }

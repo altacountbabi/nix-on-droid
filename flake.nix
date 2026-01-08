@@ -9,11 +9,6 @@
     # note: when updating nixpkgs-for-bootstrap, update store paths of proot-termux in modules/environment/login/default.nix
     nixpkgs-for-bootstrap.url = "github:NixOS/nixpkgs/c97c47f2bac4fa59e2cbdeba289686ae615f8ed4";
 
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     nix-formatter-pack = {
       url = "github:Gerschtli/nix-formatter-pack";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -33,7 +28,6 @@
       self,
       nixpkgs,
       nixpkgs-for-bootstrap,
-      home-manager,
       nix-formatter-pack,
       nmd,
       nixpkgs-docs,
@@ -88,7 +82,6 @@
           pkgs,
           modules ? [ ],
           extraSpecialArgs ? { },
-          home-manager-path ? home-manager.outPath,
           # deprecated:
           config ? null,
           extraModules ? null,
@@ -122,7 +115,7 @@
             (
               import ./modules {
                 targetSystem = pkgs.stdenv.hostPlatform.system; # system to cross-compile to
-                inherit extraSpecialArgs home-manager-path pkgs;
+                inherit extraSpecialArgs pkgs;
                 config.imports = modules;
                 isFlake = true;
               }
@@ -148,7 +141,6 @@
               }).customPkgs;
 
           docs = import ./docs {
-            inherit home-manager;
             pkgs = nixpkgs-docs.legacyPackages.${system};
             nmdSrc = nmd;
           };
@@ -167,16 +159,6 @@
         minimal = {
           path = ./templates/minimal;
           description = "Minimal example of Nix-on-Droid system config.";
-        };
-
-        home-manager = {
-          path = ./templates/home-manager;
-          description = "Minimal example of Nix-on-Droid system config with home-manager.";
-        };
-
-        advanced = {
-          path = ./templates/advanced;
-          description = "Advanced example of Nix-on-Droid system config with home-manager.";
         };
       };
     };

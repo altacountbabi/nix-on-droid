@@ -2,13 +2,12 @@
 
 {
   config,
-  lib,
   pkgs,
+  lib,
   ...
 }:
 
 with lib;
-
 let
   cfg = config.user;
 
@@ -23,13 +22,8 @@ let
 
   ids = import idsDerivation;
 in
-
 {
-
-  ###### interface
-
   options = {
-
     user = {
       group = mkOption {
         type = types.str;
@@ -74,13 +68,9 @@ in
         '';
       };
     };
-
   };
 
-  ###### implementation
-
   config = {
-
     environment.etc = {
       "group".text = ''
         root:x:0:
@@ -93,10 +83,6 @@ in
       '';
     };
 
-    user = {
-      home = "/data/data/com.termux.nix/files/home";
-    };
-
+    user.home = "/data/data/com.termux.nix/files/home";
   };
-
 }

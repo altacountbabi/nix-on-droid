@@ -2,7 +2,6 @@
 
 {
   pkgs,
-  home-manager-path,
   isFlake,
   targetSystem, # system to cross-compile to
 }:
@@ -20,7 +19,6 @@
   ./environment/path.nix
   ./environment/session-init.nix
   ./environment/shell.nix
-  ./home-manager.nix
   ./nixpkgs/options.nix
   ./terminal.nix
   ./time.nix
@@ -32,7 +30,7 @@
   {
     _file = ./module-list.nix;
     _module.args = {
-      inherit home-manager-path isFlake targetSystem;
+      inherit isFlake targetSystem;
       pkgs = pkgs.lib.mkDefault pkgs;
     };
   }

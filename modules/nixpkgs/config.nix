@@ -8,20 +8,11 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }:
 
 with lib;
-
 {
-  ###### implementation
-
-  config = {
-
-    _module.args.pkgs = import <nixpkgs> (filterAttrs (_n: v: v != null) config.nixpkgs);
-
-    nixpkgs.overlays = import ../../overlays;
-
-  };
+  _module.args.pkgs = import <nixpkgs> (filterAttrs (_n: v: v != null) config.nixpkgs);
+  nixpkgs.overlays = import ../../overlays;
 }

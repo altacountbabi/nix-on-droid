@@ -3,12 +3,10 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }:
 
 with lib;
-
 let
   defaultNixpkgsBranch = "nixos-24.05";
   defaultNixOnDroidBranch = "release-24.05";
@@ -19,13 +17,8 @@ let
   defaultNixpkgsFlake = "github:NixOS/nixpkgs/${defaultNixpkgsBranch}";
   defaultNixOnDroidFlake = "github:nix-community/nix-on-droid/${defaultNixOnDroidBranch}";
 in
-
 {
-
-  ###### interface
-
   options = {
-
     build = {
       channel = {
         nixpkgs = mkOption {
@@ -61,13 +54,9 @@ in
         };
       };
     };
-
   };
 
-  ###### implementation
-
   config = {
-
     build = {
       initialBuild = true;
 
@@ -83,7 +72,5 @@ in
       "passwd".enable = false;
       "UNINTIALISED".text = "";
     };
-
   };
-
 }

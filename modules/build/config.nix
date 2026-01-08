@@ -1,20 +1,13 @@
 # Copyright (c) 2019-2024, see AUTHORS. Licensed under MIT License, see LICENSE.
 
 {
-  config,
   lib,
-  pkgs,
   ...
 }:
 
 with lib;
-
 {
-
-  ###### interface
-
   options = {
-
     build = {
       initialBuild = mkOption {
         type = types.bool;
@@ -40,15 +33,9 @@ with lib;
         description = "Extra options passed to proot, e.g., extra bind mounts.";
       };
     };
-
   };
-
-  ###### implementation
 
   config = {
-
     build.installationDir = "/data/data/com.termux.nix/files/usr";
-
   };
-
 }

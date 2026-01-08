@@ -10,7 +10,6 @@
 }:
 
 with lib;
-
 let
   cfg = config.environment.files;
 
@@ -20,13 +19,8 @@ let
     inherit config initialPackageInfo targetSystem;
   };
 in
-
 {
-
-  ###### interface
-
   options = {
-
     environment.files = {
       login = mkOption {
         type = types.package;
@@ -49,13 +43,9 @@ in
         description = "Proot-static path";
       };
     };
-
   };
 
-  ###### implementation
-
   config = {
-
     build.activation = {
       installLogin = ''
         if ! diff /bin/login ${login} > /dev/null; then
@@ -96,20 +86,8 @@ in
             aarch64-linux = "w9km5x8v4xma2wgqxpsx4jbr2kz7nk33-proot-termux-static-aarch64-unknown-linux-android-0-unstable-2025-10-19";
             x86_64-linux = "xpnf8vzswwaqmgxakcqhw8f5b4363rsh-proot-termux-static-x86_64-unknown-linux-android-0-unstable-2025-10-19";
           };
-          # crossCompiledPaths = {
-          #   aarch64-linux = pkgs.requireFile rec {
-          #     name = "proot-termux-static-aarch64-unknown-linux-android-0-unstable-2025-10-19";
-          #     hash = "sha256-rvNpNN36ZLW+Hk7gyyDEBEykOzq8DwldXIAO3J+wX1I=";
-          #     message = "${name} was not bootstraped";
-          #   };
-          #   x86_64-linux = pkgs.requireFile {
-          #     name = "proot-termux-static-x86_64-unknown-linux-android-0-unstable-2025-10-19";
-          #   };
-          # };
         in
         "${crossCompiledPaths.${targetSystem}}";
     };
-
   };
-
 }

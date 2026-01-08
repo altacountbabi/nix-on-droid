@@ -5,6 +5,7 @@
   pkgs,
   ...
 }:
+
 with lib;
 let
   cfg = config.terminal;
@@ -17,10 +18,20 @@ let
   validColorname = colorName: builtins.elem colorName validColornames;
 in
 {
-  ###### interface
-
   options = {
     terminal = {
+      settings = mkOption {
+        default = { };
+        type = types.attrs;
+        example = lib.literalExpression ''
+          {
+            back_key = "escape";
+          }
+        '';
+        description = ''
+          Termux settings
+        '';
+      };
       font = mkOption {
         default = null;
         type = types.nullOr types.path;
@@ -47,8 +58,6 @@ in
       };
     };
   };
-
-  ###### implementation
 
   config = {
     assertions = [
@@ -81,6 +90,14 @@ in
         colorsTarget = "${configDir}/colors.properties";
         colorsBackup = "${configDir}/colors.properties.bak";
         colorsPath = "${config.build.installationDir}/${colors}";
+
+        termux = pkgs.writeTextFile {
+          name = "termux.properties";
+          text = toKeyValue { } cfg.termux;
+        };
+        termuxTarget = "${configDir}/termux.properties";
+        termuxBackup = "${configDir}/termux.properties.bak";
+        termuxPath = "${config.build.installationDir}/${termux}";
       in
       (
         if (cfg.font != null) then
@@ -132,6 +149,36 @@ in
                 if [ -e "${colorsBackup}" ]; then
                   $DRY_RUN_CMD mv $VERBOSE_ARG "${colorsBackup}" "${colorsTarget}"
                   $DRY_RUN_CMD echo "${colorsTarget} has been restored from backup"
+                else
+                  if $DRY_RUN_CMD rm $VERBOSE_ARG -d "${configDir}" 2>/dev/null
+                  then
+                    $DRY_RUN_CMD echo "removed empty ${configDir}"
+                  fi
+                fi
+              fi
+            '';
+          }
+      )
+      // (
+        if (cfg.settings != { }) then
+          {
+            linktermux = ''
+              $DRY_RUN_CMD mkdir $VERBOSE_ARG -p "${configDir}"
+              if [ -e "${termuxTarget}" ] && ! [ -L "${termuxTarget}" ]; then
+                $DRY_RUN_CMD mv $VERBOSE_ARG "${termuxTarget}" "${termuxBackup}"
+                $DRY_RUN_CMD echo "${termuxTarget} has been moved to ${termuxBackup}"
+              fi
+              $DRY_RUN_CMD ln $VERBOSE_ARG -sf "${termuxPath}" "${termuxTarget}"
+            '';
+          }
+        else
+          {
+            unlinktermux = ''
+              if [ -e "${termuxTarget}" ] && [ -L "${termuxTarget}" ]; then
+                $DRY_RUN_CMD rm $VERBOSE_ARG "${termuxTarget}"
+                if [ -e "${termuxBackup}" ]; then
+                  $DRY_RUN_CMD mv $VERBOSE_ARG "${termuxBackup}" "${termuxTarget}"
+                  $DRY_RUN_CMD echo "${termuxTarget} has been restored from backup"
                 else
                   if $DRY_RUN_CMD rm $VERBOSE_ARG -d "${configDir}" 2>/dev/null
                   then

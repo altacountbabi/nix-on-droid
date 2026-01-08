@@ -8,7 +8,6 @@
 }:
 
 with lib;
-
 let
   cfg = config.build;
 
@@ -77,13 +76,8 @@ let
     <code>$VERBOSE_ECHO "any message"</code>.
   '';
 in
-
 {
-
-  ###### interface
-
   options = {
-
     build = {
       activation = mkOption {
         default = { };
@@ -136,13 +130,9 @@ in
         '';
       };
     };
-
   };
 
-  ###### implementation
-
   config = {
-
     build = {
       activationAfter.linkProfile = ''
         generationDir="$(dirname $0)"
@@ -176,7 +166,5 @@ in
             ln --symbolic ${config.environment.usrBinEnv} $out/filesystem/usr/bin/env
           '';
     };
-
   };
-
 }

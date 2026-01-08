@@ -74,39 +74,6 @@ An alternative location is `~/.config/nixpkgs/config.nix` with the key
 
 See <https://nix-community.github.io/nix-on-droid/> for list of all available options.
 
-### [`home-manager`](https://github.com/nix-community/home-manager) integration
-
-To enable `home-manager` you simply need to follow the instructions already provided in the example `nix-on-droid.nix`:
-
-1.  Add `home-manager` channel:
-    ```sh
-    nix-channel --add https://github.com/nix-community/home-manager/archive/release-24.05.tar.gz home-manager
-    nix-channel --update
-    ```
-2.  Configure `home-manager`:
-    ```nix
-    { pkgs, ... }:
-
-    {
-      # Read Nix-on-Droid changelog before changing this value
-      system.stateVersion = "24.05";
-
-      # insert Nix-on-Droid config
-
-      home-manager.config =
-        { pkgs, ... }:
-        {
-          # Read home-manager changelog before changing this value
-          home.stateVersion = "24.05";
-
-          # insert home-manager config
-        };
-
-      # or if you have a separate home.nix already present:
-      home-manager.config = ./home.nix;
-    }
-    ```
-
 ### `nix-on-droid` executable
 
 This executable is responsible for activating new configurations:
@@ -210,7 +177,7 @@ A minimal example could look like the following:
 For more examples and nix flake templates, see [`templates`](./templates) directory or explore with:
 
 ```sh
-nix flake init --template github:nix-community/nix-on-droid#advanced
+nix flake init --template github:nix-community/nix-on-droid#minimal
 ```
 
 ### Usage with `nix-on-droid`

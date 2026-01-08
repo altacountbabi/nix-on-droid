@@ -8,7 +8,6 @@
 }:
 
 with lib;
-
 let
   cfg = config.environment;
 
@@ -37,23 +36,12 @@ let
       # Workaround for https://github.com/NixOS/nix/issues/1865
       ${addToNixPath "nixpkgs=${config.user.home}/.nix-defexpr/channels/nixpkgs/"}
 
-      ${optionalString (config.home-manager.config != null) ''
-        if [ -e "${config.user.home}/.nix-profile/etc/profile.d/hm-session-vars.sh" ]; then
-          . "${config.user.home}/.nix-profile/etc/profile.d/hm-session-vars.sh"
-        fi
-      ''}
-
       ${exportAll cfg.sessionVariables}
     '';
   };
 in
-
 {
-
-  ###### interface
-
   options = {
-
     environment = {
       motd = mkOption {
         default = ''
@@ -126,13 +114,9 @@ in
         '';
       };
     };
-
   };
 
-  ###### implementation
-
   config = {
-
     build = { inherit sessionInit; };
 
     environment = {
@@ -148,7 +132,5 @@ in
         LOCALE_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
       };
     };
-
   };
-
 }

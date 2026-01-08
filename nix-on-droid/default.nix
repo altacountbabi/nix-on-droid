@@ -3,7 +3,6 @@
 {
   bash,
   coreutils,
-  lib,
   nix,
   runCommand,
 }:

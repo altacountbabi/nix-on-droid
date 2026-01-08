@@ -13,7 +13,6 @@
 }:
 
 with lib;
-
 let
   tzdir = "${pkgs.tzdata}/share/zoneinfo";
   nospace = str: filter (c: c == " ") (stringToCharacters str) == [ ];
@@ -21,13 +20,8 @@ let
     description = "null or string without spaces";
   };
 in
-
 {
-
-  ###### interface
-
   options = {
-
     time.timeZone = mkOption {
       default = null;
       type = timezoneType;
@@ -39,13 +33,9 @@ in
         If null, the timezone will default to UTC.
       '';
     };
-
   };
 
-  ###### implementation
-
   config = {
-
     environment = {
       etc = {
         zoneinfo.source = tzdir;
@@ -53,9 +43,7 @@ in
       // optionalAttrs (config.time.timeZone != null) {
         localtime.source = "/etc/zoneinfo/${config.time.timeZone}";
       };
-
       sessionVariables.TZDIR = "/etc/zoneinfo";
     };
-
   };
 }

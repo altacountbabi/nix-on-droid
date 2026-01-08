@@ -3,14 +3,14 @@
 {
   nixpkgs,
   system, # system to compile for, user-facing name of targetSystem
-  _nativeSystem ? null, # system to cross-compile from, see flake.nix
+  nativeSystem' ? null, # system to cross-compile from, see flake.nix
   nixOnDroidChannelURL ? null,
   nixpkgsChannelURL ? null,
   nixOnDroidFlakeURL ? null,
 }:
 
 let
-  nativeSystem = if _nativeSystem == null then system else _nativeSystem;
+  nativeSystem = if nativeSystem' == null then system else nativeSystem';
   nixDirectory = callPackage ./nix-directory.nix { inherit system; };
   initialPackageInfo = import "${nixDirectory}/nix-support/package-info.nix";
 

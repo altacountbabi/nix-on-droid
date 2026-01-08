@@ -13,7 +13,6 @@
 }:
 
 with lib;
-
 let
   cfg = config.networking;
 
@@ -26,13 +25,8 @@ let
     )
   );
 in
-
 {
-
-  ###### interface
-
   options.networking = {
-
     hosts = lib.mkOption {
       type = types.attrsOf (types.listOf types.str);
       default = { };
@@ -65,13 +59,9 @@ in
         For adding hosts from derivation results, use {option}`networking.hostFiles` instead.
       '';
     };
-
   };
 
-  ###### implementation
-
   config = {
-
     assertions = [
       {
         assertion = !localhostMultiple;
@@ -118,7 +108,5 @@ in
         nameserver 8.8.8.8
       '';
     };
-
   };
-
 }

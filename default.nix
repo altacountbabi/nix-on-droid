@@ -4,6 +4,6 @@
   pkgs ? import <nixpkgs> { },
 }:
 
-rec {
+{
   nix-on-droid = pkgs.callPackage ./nix-on-droid { };
 }

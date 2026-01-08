@@ -8,17 +8,11 @@
 }:
 
 with lib;
-
 let
   cfg = config.environment;
 in
-
 {
-
-  ###### interface
-
   options = {
-
     environment = {
       packages = mkOption {
         type = types.listOf types.package;
@@ -44,13 +38,9 @@ in
         description = "List of additional package outputs to be installed as user packages.";
       };
     };
-
   };
 
-  ###### implementation
-
   config = {
-
     build.activation.installPackages = ''
       if [[ -e "${config.user.home}/.nix-profile/manifest.json" ]]; then
         # manual removal and installation as two non-atomical steps is required
@@ -93,7 +83,5 @@ in
         };
       };
     };
-
   };
-
 }

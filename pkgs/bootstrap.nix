@@ -5,7 +5,6 @@
   nixDirectory,
   prootTermux,
   bash,
-  pkgs,
   config,
   initialPackageInfo,
 }:

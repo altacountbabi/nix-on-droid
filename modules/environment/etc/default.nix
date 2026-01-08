@@ -8,7 +8,6 @@
 }:
 
 with lib;
-
 let
   etc' = filter (f: f.enable) (attrValues config.environment.etc);
 
@@ -28,7 +27,6 @@ let
     { name, config, ... }:
     {
       options = {
-
         enable = mkOption {
           type = types.bool;
           default = true;
@@ -56,7 +54,6 @@ let
           type = types.path;
           description = "Path of the source file.";
         };
-
       };
 
       config = {
@@ -68,17 +65,11 @@ let
           mkDefault (pkgs.writeText name' config.text)
         );
       };
-
     }
   );
 in
-
 {
-
-  ###### interface
-
   options = {
-
     environment = {
       etc = mkOption {
         type = types.loaOf fileType;
@@ -111,21 +102,14 @@ in
         '';
       };
     };
-
   };
 
-  ###### implementation
-
   config = {
-
     build = {
       inherit etc;
-
       activation.setUpEtc = ''
         $DRY_RUN_CMD bash ${./setup-etc.sh} /etc ${etc}/etc ${toString config.environment.etcBackupExtension}
       '';
     };
-
   };
-
 }
