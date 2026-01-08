@@ -28,9 +28,21 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-for-bootstrap, home-manager, nix-formatter-pack, nmd, nixpkgs-docs }:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      nixpkgs-for-bootstrap,
+      home-manager,
+      nix-formatter-pack,
+      nmd,
+      nixpkgs-docs,
+    }:
     let
-      forEachSystem = nixpkgs.lib.genAttrs [ "aarch64-linux" "x86_64-linux" ];
+      forEachSystem = nixpkgs.lib.genAttrs [
+        "aarch64-linux"
+        "x86_64-linux"
+      ];
 
       overlay = nixpkgs.lib.composeManyExtensions (import ./overlays);
 
@@ -67,25 +79,33 @@
         nix-formatter-pack-check = nix-formatter-pack.lib.mkCheck formatterPackArgsFor.${system};
       });
 
-      formatter = forEachSystem (system: nix-formatter-pack.lib.mkFormatter formatterPackArgsFor.${system});
+      formatter = forEachSystem (
+        system: nix-formatter-pack.lib.mkFormatter formatterPackArgsFor.${system}
+      );
 
       lib.nixOnDroidConfiguration =
-        { pkgs
-        , modules ? [ ]
-        , extraSpecialArgs ? { }
-        , home-manager-path ? home-manager.outPath
+        {
+          pkgs,
+          modules ? [ ],
+          extraSpecialArgs ? { },
+          home-manager-path ? home-manager.outPath,
           # deprecated:
-        , config ? null
-        , extraModules ? null
-        , system ? null  # pkgs.stdenv.hostPlatform.system is used to detect user's arch
+          config ? null,
+          extraModules ? null,
+          system ? null, # pkgs.stdenv.hostPlatform.system is used to detect user's arch
         }:
-        if ! (builtins.elem pkgs.stdenv.hostPlatform.system [ "aarch64-linux" "x86_64-linux" ]) then
-          throw
-            ("${pkgs.stdenv.hostPlatform.system} is not supported; aarch64-linux / x86_64-linux " +
-              "are the only currently supported system types")
+        if
+          !(builtins.elem pkgs.stdenv.hostPlatform.system [
+            "aarch64-linux"
+            "x86_64-linux"
+          ])
+        then
+          throw (
+            "${pkgs.stdenv.hostPlatform.system} is not supported; aarch64-linux / x86_64-linux "
+            + "are the only currently supported system types"
+          )
         else
-          pkgs.lib.throwIf
-            (config != null || extraModules != null || system != null)
+          pkgs.lib.throwIf (config != null || extraModules != null || system != null)
             ''
               The 'nixOnDroidConfiguration' arguments
 
@@ -99,29 +119,33 @@
               so pass a 'pkgs = import nixpkgs { system = "aarch64-linux"; };'
               See the 22.11 release notes for more.
             ''
-            (import ./modules {
-              targetSystem = pkgs.stdenv.hostPlatform.system; # system to cross-compile to
-              inherit extraSpecialArgs home-manager-path pkgs;
-              config.imports = modules;
-              isFlake = true;
-            });
+            (
+              import ./modules {
+                targetSystem = pkgs.stdenv.hostPlatform.system; # system to cross-compile to
+                inherit extraSpecialArgs home-manager-path pkgs;
+                config.imports = modules;
+                isFlake = true;
+              }
+            );
 
       overlays.default = overlay;
 
-      packages = forEachSystem (system:
+      packages = forEachSystem (
+        system:
         let
-          flattenArch = arch: derivationAttrset:
-            nixpkgs.lib.attrsets.mapAttrs'
-              (name: drv:
-                nixpkgs.lib.attrsets.nameValuePair (name + "-" + arch) drv
-              )
-              derivationAttrset;
-          perArchCustomPkgs = arch: flattenArch arch
-            (import ./pkgs {
-              _nativeSystem = system; # system to cross-compile from
-              system = "${arch}-linux"; # system to cross-compile to
-              nixpkgs = nixpkgs-for-bootstrap;
-            }).customPkgs;
+          flattenArch =
+            arch: derivationAttrset:
+            nixpkgs.lib.attrsets.mapAttrs' (
+              name: drv: nixpkgs.lib.attrsets.nameValuePair (name + "-" + arch) drv
+            ) derivationAttrset;
+          perArchCustomPkgs =
+            arch:
+            flattenArch arch
+              (import ./pkgs {
+                _nativeSystem = system; # system to cross-compile from
+                system = "${arch}-linux"; # system to cross-compile to
+                nixpkgs = nixpkgs-for-bootstrap;
+              }).customPkgs;
 
           docs = import ./docs {
             inherit home-manager;

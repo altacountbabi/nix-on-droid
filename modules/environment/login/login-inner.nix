@@ -1,6 +1,12 @@
 # Copyright (c) 2019-2024, see AUTHORS. Licensed under MIT License, see LICENSE.
 
-{ config, lib, initialPackageInfo, writeText, targetSystem }:
+{
+  config,
+  lib,
+  initialPackageInfo,
+  writeText,
+  targetSystem,
+}:
 
 let
   inherit (initialPackageInfo) cacert nix;
@@ -10,8 +16,10 @@ let
     if config.user.shell.type or "not-found" == "derivation" then
       if config.user.shell ? passthru.shellPath then
         "${config.user.shell}${config.user.shell.passthru.shellPath}"
-      else builtins.abort "Derivation without shell path found at `user.shell`. Use the path to the exact binary."
-    else config.user.shell;
+      else
+        builtins.abort "Derivation without shell path found at `user.shell`. Use the path to the exact binary."
+    else
+      config.user.shell;
 in
 
 writeText "login-inner" ''

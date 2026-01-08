@@ -1,6 +1,10 @@
 # Copyright (c) 2019-2024, see AUTHORS. Licensed under MIT License, see LICENSE.
 
-{ pkgs, home-manager, nmdSrc }:
+{
+  pkgs,
+  home-manager,
+  nmdSrc,
+}:
 
 let
   nmd = import nmdSrc { inherit pkgs; };

@@ -1,6 +1,11 @@
 # Copyright (c) 2019-2024, see AUTHORS. Licensed under MIT License, see LICENSE.
 
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
@@ -63,8 +68,24 @@ in
 
       sessionVariables = mkOption {
         default = { };
-        type = types.attrs;
-        example = { EDITOR = "emacs"; GS_OPTIONS = "-sPAPERSIZE=a4"; };
+        type =
+          with types;
+          attrsOf (
+            nullOr (oneOf [
+              (listOf (oneOf [
+                int
+                str
+                path
+              ]))
+              int
+              str
+              path
+            ])
+          );
+        example = {
+          EDITOR = "nvim";
+          VISUAL = "nvim";
+        };
         description = ''
           Environment variables to always set at login.
 
@@ -107,7 +128,6 @@ in
     };
 
   };
-
 
   ###### implementation
 

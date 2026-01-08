@@ -1,6 +1,11 @@
 # Copyright (c) 2019-2025, see AUTHORS. Licensed under MIT License, see LICENSE.
 
-{ lib, config, system, targetSystem }:
+{
+  lib,
+  config,
+  system,
+  targetSystem,
+}:
 
 let
   arch = lib.strings.removeSuffix "-linux" targetSystem;

@@ -1,6 +1,13 @@
 # Copyright (c) 2019-2025, see AUTHORS. Licensed under MIT License, see LICENSE.
 
-{ config, lib, pkgs, initialPackageInfo, targetSystem, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  initialPackageInfo,
+  targetSystem,
+  ...
+}:
 
 with lib;
 
@@ -36,15 +43,14 @@ in
       };
 
       prootStatic = mkOption {
-        type = types.package;
+        type = types.str;
         readOnly = true;
         internal = true;
-        description = "<literal>proot-static</literal> package.";
+        description = "Proot-static path";
       };
     };
 
   };
-
 
   ###### implementation
 
@@ -74,7 +80,7 @@ in
         if (test -e /bin/.proot-static.new && ! diff /bin/.proot-static.new ${cfg.prootStatic}/bin/proot-static > /dev/null) || \
             (! test -e /bin/.proot-static.new && ! diff /bin/proot-static ${cfg.prootStatic}/bin/proot-static > /dev/null); then
           $DRY_RUN_CMD mkdir $VERBOSE_ARG --parents /bin
-          $DRY_RUN_CMD cp $VERBOSE_ARG ${cfg.prootStatic}/bin/proot-static /bin/.proot-static.tmp
+          $DRY_RUN_CMD cp $VERBOSE_ARG /nix/store/${cfg.prootStatic}/bin/proot-static /bin/.proot-static.tmp
           $DRY_RUN_CMD chmod $VERBOSE_ARG u+w /bin/.proot-static.tmp
           $DRY_RUN_CMD mv $VERBOSE_ARG /bin/.proot-static.tmp /bin/.proot-static.new
         fi
@@ -87,9 +93,19 @@ in
       prootStatic =
         let
           crossCompiledPaths = {
-            aarch64-linux = "/nix/store/w9km5x8v4xma2wgqxpsx4jbr2kz7nk33-proot-termux-static-aarch64-unknown-linux-android-0-unstable-2025-10-19";
-            x86_64-linux = "/nix/store/xpnf8vzswwaqmgxakcqhw8f5b4363rsh-proot-termux-static-x86_64-unknown-linux-android-0-unstable-2025-10-19";
+            aarch64-linux = "w9km5x8v4xma2wgqxpsx4jbr2kz7nk33-proot-termux-static-aarch64-unknown-linux-android-0-unstable-2025-10-19";
+            x86_64-linux = "xpnf8vzswwaqmgxakcqhw8f5b4363rsh-proot-termux-static-x86_64-unknown-linux-android-0-unstable-2025-10-19";
           };
+          # crossCompiledPaths = {
+          #   aarch64-linux = pkgs.requireFile rec {
+          #     name = "proot-termux-static-aarch64-unknown-linux-android-0-unstable-2025-10-19";
+          #     hash = "sha256-rvNpNN36ZLW+Hk7gyyDEBEykOzq8DwldXIAO3J+wX1I=";
+          #     message = "${name} was not bootstraped";
+          #   };
+          #   x86_64-linux = pkgs.requireFile {
+          #     name = "proot-termux-static-x86_64-unknown-linux-android-0-unstable-2025-10-19";
+          #   };
+          # };
         in
         "${crossCompiledPaths.${targetSystem}}";
     };

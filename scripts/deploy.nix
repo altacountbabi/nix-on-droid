@@ -19,12 +19,11 @@ let
   ];
 in
 
-pkgs.runCommand
-  "deploy"
-{
-  preferLocalBuild = true;
-  allowSubstitutes = false;
-}
+pkgs.runCommand "deploy"
+  {
+    preferLocalBuild = true;
+    allowSubstitutes = false;
+  }
   ''
     install -D -m755  ${./deploy.sh} $out
 

@@ -1,6 +1,11 @@
 # Copyright (c) 2019-2022, see AUTHORS. Licensed under MIT License, see LICENSE.
 
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
@@ -22,14 +27,14 @@ let
     config.nix.package
   ];
 
-  mkActivationCmds = activation: concatStringsSep "\n" (
-    mapAttrsToList
-      (name: value: ''
+  mkActivationCmds =
+    activation:
+    concatStringsSep "\n" (
+      mapAttrsToList (name: value: ''
         noteEcho "Activating ${name}"
         ${value}
-      '')
-      activation
-  );
+      '') activation
+    );
 
   activationScript = pkgs.writeScript "activation-script" ''
     #!${pkgs.runtimeShell}
@@ -85,7 +90,8 @@ in
         type = types.attrs;
         description = ''
           Activation scripts for the Nix-on-Droid environment.
-        '' + activationOptionDescriptionSuffix;
+        ''
+        + activationOptionDescriptionSuffix;
       };
 
       activationBefore = mkOption {
@@ -94,7 +100,8 @@ in
         description = ''
           Activation scripts for the Nix-on-Droid environment that
           need to be run first.
-        '' + activationOptionDescriptionSuffix;
+        ''
+        + activationOptionDescriptionSuffix;
       };
 
       activationAfter = mkOption {
@@ -103,7 +110,8 @@ in
         description = ''
           Activation scripts for the Nix-on-Droid environment that
           need to be run last.
-        '' + activationOptionDescriptionSuffix;
+        ''
+        + activationOptionDescriptionSuffix;
       };
 
       activationPackage = mkOption {
@@ -131,7 +139,6 @@ in
 
   };
 
-
   ###### implementation
 
   config = {
@@ -148,8 +155,7 @@ in
       '';
 
       activationPackage =
-        pkgs.runCommand
-          "nix-on-droid-generation"
+        pkgs.runCommand "nix-on-droid-generation"
           {
             preferLocalBuild = true;
             allowSubstitutes = false;
@@ -164,7 +170,7 @@ in
 
             ln --symbolic ${config.environment.files.login} $out/filesystem/bin/login
             ln --symbolic ${config.environment.files.loginInner} $out/filesystem/usr/lib/login-inner
-            ln --symbolic ${config.environment.files.prootStatic}/bin/proot-static $out/filesystem/bin/proot-static
+            ln --symbolic /nix/store/${config.environment.files.prootStatic}/bin/proot-static $out/filesystem/bin/proot-static
 
             ln --symbolic ${config.environment.binSh} $out/filesystem/bin/sh
             ln --symbolic ${config.environment.usrBinEnv} $out/filesystem/usr/bin/env

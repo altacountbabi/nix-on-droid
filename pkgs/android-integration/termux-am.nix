@@ -1,6 +1,10 @@
 # Copyright (c) 2019-2024, see AUTHORS. Licensed under MIT License, see LICENSE.
 
-{ stdenv, fetchFromGitHub, cmake }:
+{
+  stdenv,
+  fetchFromGitHub,
+  cmake,
+}:
 
 let
   appPath = "/data/data/com.termux.nix/files/apps/com.termux.nix";

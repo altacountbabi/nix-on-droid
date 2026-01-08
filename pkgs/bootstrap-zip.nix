@@ -1,6 +1,12 @@
 # Copyright (c) 2019-2024, see AUTHORS. Licensed under MIT License, see LICENSE.
 
-{ lib, runCommand, zip, bootstrap, targetSystem }:
+{
+  lib,
+  runCommand,
+  zip,
+  bootstrap,
+  targetSystem,
+}:
 
 let
   arch = lib.strings.removeSuffix "-linux" targetSystem;

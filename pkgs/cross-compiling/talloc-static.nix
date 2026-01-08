@@ -1,10 +1,11 @@
 # Copyright (c) 2019-2025, see AUTHORS. Licensed under MIT License, see LICENSE.
 
-{ callPackage
-, fetchurl
-, python3
-, pkg-config
-, wafHook
+{
+  callPackage,
+  fetchurl,
+  python3,
+  pkg-config,
+  wafHook,
 }:
 
 let
@@ -20,7 +21,11 @@ pkgsCross.stdenv.mkDerivation rec {
     hash = "sha256-3EbEC59GuzTdl/5B9Uiw6LJHt3qRhXZzPFKOg6vYVN0=";
   };
 
-  nativeBuildInputs = [ pkg-config python3 wafHook ];
+  nativeBuildInputs = [
+    pkg-config
+    python3
+    wafHook
+  ];
   buildInputs = [ ];
 
   wafPath = "./buildtools/bin/waf";

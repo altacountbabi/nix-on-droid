@@ -1,10 +1,11 @@
 # Copyright (c) 2019-2025, see AUTHORS. Licensed under MIT License, see LICENSE.
 
-{ stdenv
-, fetchFromGitHub
-, talloc
-, static ? true
-, outputBinaryName ? "proot-static"
+{
+  stdenv,
+  fetchFromGitHub,
+  talloc,
+  static ? true,
+  outputBinaryName ? "proot-static",
 }:
 
 stdenv.mkDerivation {
@@ -40,9 +41,15 @@ stdenv.mkDerivation {
   buildInputs = [ talloc ];
   patches = [ ./detranslate-empty.patch ];
   hardeningDisable = [ "zerocallusedregs" ];
-  makeFlags = [ "-Csrc" "V=1" ];
-  CFLAGS = [ "-O3" "-I../fake-ashmem" ] ++
-    (if static then [ "-static" ] else [ ]);
+  makeFlags = [
+    "-Csrc"
+    "V=1"
+  ];
+  CFLAGS = [
+    "-O3"
+    "-I../fake-ashmem"
+  ]
+  ++ (if static then [ "-static" ] else [ ]);
   LDFLAGS = if static then [ "-static" ] else [ ];
   preInstall = "${stdenv.cc.targetPrefix}strip src/proot";
   installPhase = "install -D -m 0755 src/proot $out/bin/${outputBinaryName}";

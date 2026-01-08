@@ -1,22 +1,25 @@
 # Copyright (c) 2019-2025, see AUTHORS. Licensed under MIT License, see LICENSE.
 
-{ config
-, lib
-, stdenvNoCC
-, closureInfo
-, prootTermux
-, proot
-, pkgsStatic
-, system
+{
+  config,
+  lib,
+  stdenvNoCC,
+  closureInfo,
+  prootTermux,
+  proot,
+  pkgsStatic,
+  system,
 }:
 
 let
   buildRootDirectory = "root-directory";
 
   # https://github.com/NixOS/nixpkgs/pull/471845
-  staticNix = pkgsStatic.nix.overrideScope (_: _: {
-    libblake3 = pkgsStatic.libblake3.override { useTBB = false; };
-  });
+  staticNix = pkgsStatic.nix.overrideScope (
+    _: _: {
+      libblake3 = pkgsStatic.libblake3.override { useTBB = false; };
+    }
+  );
   # nix-cli is not exposed externally, hacking around it
   staticNixCli = "$(dirname $(dirname $(readlink ${staticNix}/bin/nix)))";
 

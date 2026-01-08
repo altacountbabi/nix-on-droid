@@ -1,12 +1,13 @@
 # Copyright (c) 2019-2024, see AUTHORS. Licensed under MIT License, see LICENSE.
 
-{ stdenvNoCC
-, fetchFromGitHub
-, autoreconfHook
-, makeWrapper
-, gnused
-, getopt
-, termux-am
+{
+  stdenvNoCC,
+  fetchFromGitHub,
+  autoreconfHook,
+  makeWrapper,
+  gnused,
+  getopt,
+  termux-am,
 }:
 
 stdenvNoCC.mkDerivation rec {
@@ -18,7 +19,10 @@ stdenvNoCC.mkDerivation rec {
     rev = "v${version}";
     sha256 = "sha256-LkkeaEQcY8HgunBYAg3Ymn5xYPvrGqGNCZTd/NyIOKY=";
   };
-  nativeBuildInputs = [ autoreconfHook makeWrapper ];
+  nativeBuildInputs = [
+    autoreconfHook
+    makeWrapper
+  ];
   propagatedInputs = [ termux-am ];
 
   # https://github.com/termux/termux-tools/pull/95

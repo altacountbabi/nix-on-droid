@@ -10,12 +10,18 @@
     };
   };
 
-  outputs = { self, nixpkgs, nix-on-droid }: {
+  outputs =
+    {
+      self,
+      nixpkgs,
+      nix-on-droid,
+    }:
+    {
 
-    nixOnDroidConfigurations.default = nix-on-droid.lib.nixOnDroidConfiguration {
-      pkgs = import nixpkgs { system = "aarch64-linux"; };
-      modules = [ ./nix-on-droid.nix ];
+      nixOnDroidConfigurations.default = nix-on-droid.lib.nixOnDroidConfiguration {
+        pkgs = import nixpkgs { system = "aarch64-linux"; };
+        modules = [ ./nix-on-droid.nix ];
+      };
+
     };
-
-  };
 }
