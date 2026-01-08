@@ -11,7 +11,7 @@ with lib;
 let
   cfg = config.environment;
 
-  export = n: v: "export ${n}=\"${toString v}\"";
+  export = n: v: ''export ${n}="${toString v}"'';
 
   exportAll = vars: concatStringsSep "\n" (mapAttrsToList export vars);
 

@@ -5,11 +5,7 @@
 # (Copyright (c) 2017-2019 Robert Helgesson and Home Manager contributors,
 #  licensed under MIT License as well)
 
-{
-  lib,
-  pkgs,
-  ...
-}:
+{ lib, pkgs, ... }:
 
 with lib;
 let

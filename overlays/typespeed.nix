@@ -4,12 +4,10 @@ _self: super:
 
 let
   nixpkgs = import ./lib/nixpkgs.nix { inherit super; };
-in
 
+in
 {
   typespeed = nixpkgs.typespeed.overrideAttrs (_old: {
-    patches = nixpkgs.typespeed.patches ++ [
-      ./typespeed-no-drop-priv.patch
-    ];
+    patches = nixpkgs.typespeed.patches ++ [ ./typespeed-no-drop-priv.patch ];
   });
 }

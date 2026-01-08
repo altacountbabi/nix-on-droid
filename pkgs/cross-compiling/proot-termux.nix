@@ -5,8 +5,8 @@
 let
   pkgsCross = callPackage ./cross-pkgs.nix { };
   stdenv = pkgsCross.stdenvAdapters.makeStaticBinaries pkgsCross.stdenv;
-in
 
+in
 pkgsCross.callPackage ../proot-termux {
   talloc = tallocStatic;
   inherit stdenv;

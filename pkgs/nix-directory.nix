@@ -16,9 +16,7 @@ let
 
   # https://github.com/NixOS/nixpkgs/pull/471845
   staticNix = pkgsStatic.nix.overrideScope (
-    _: _: {
-      libblake3 = pkgsStatic.libblake3.override { useTBB = false; };
-    }
+    _: _: { libblake3 = pkgsStatic.libblake3.override { useTBB = false; }; }
   );
   # nix-cli is not exposed externally, hacking around it
   staticNixCli = "$(dirname $(dirname $(readlink ${staticNix}/bin/nix)))";
@@ -31,13 +29,9 @@ let
     "-w /"
   ];
 
-  prootTermuxClosure = closureInfo {
-    rootPaths = [
-      prootTermux
-    ];
-  };
-in
+  prootTermuxClosure = closureInfo { rootPaths = [ prootTermux ]; };
 
+in
 stdenvNoCC.mkDerivation {
   name = "nix-directory";
 

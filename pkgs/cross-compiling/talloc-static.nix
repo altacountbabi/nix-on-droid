@@ -10,8 +10,8 @@
 
 let
   pkgsCross = callPackage ./cross-pkgs.nix { };
-in
 
+in
 pkgsCross.stdenv.mkDerivation rec {
   pname = "talloc";
   version = "2.4.3";

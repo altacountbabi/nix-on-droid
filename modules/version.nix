@@ -1,9 +1,6 @@
 # Copyright (c) 2019-2024, see AUTHORS. Licensed under MIT License, see LICENSE.
 
-{
-  lib,
-  ...
-}:
+{ lib, ... }:
 
 with lib;
 {

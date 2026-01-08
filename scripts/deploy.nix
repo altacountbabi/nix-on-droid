@@ -17,8 +17,8 @@ let
     openssh
     rsync
   ];
-in
 
+in
 pkgs.runCommand "deploy"
   {
     preferLocalBuild = true;

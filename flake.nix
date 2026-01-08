@@ -49,7 +49,6 @@
             enable = true;
             noLambdaPatternNames = true;
           };
-          nixpkgs-fmt.enable = true;
           statix.enable = true;
         };
       });

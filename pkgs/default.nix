@@ -3,14 +3,14 @@
 {
   nixpkgs,
   system, # system to compile for, user-facing name of targetSystem
-  nativeSystem' ? null, # system to cross-compile from, see flake.nix
+  _nativeSystem ? null, # system to cross-compile from, see flake.nix
   nixOnDroidChannelURL ? null,
   nixpkgsChannelURL ? null,
   nixOnDroidFlakeURL ? null,
 }:
 
 let
-  nativeSystem = if nativeSystem' == null then system else nativeSystem';
+  nativeSystem = if _nativeSystem == null then system else _nativeSystem;
   nixDirectory = callPackage ./nix-directory.nix { inherit system; };
   initialPackageInfo = import "${nixDirectory}/nix-support/package-info.nix";
 
@@ -74,8 +74,8 @@ let
     prootTermux = callPackage ./cross-compiling/proot-termux.nix { };
     tallocStatic = callPackage ./cross-compiling/talloc-static.nix { };
   };
-in
 
+in
 {
   inherit (modules) config;
   inherit customPkgs;

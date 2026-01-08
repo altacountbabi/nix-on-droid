@@ -1,9 +1,6 @@
 # Copyright (c) 2019-2024, see AUTHORS. Licensed under MIT License, see LICENSE.
 
-{
-  pkgs,
-  nmdSrc,
-}:
+{ pkgs, nmdSrc }:
 
 let
   nmd = import nmdSrc { inherit pkgs; };
@@ -42,8 +39,8 @@ let
       </toc>
     '';
   };
-in
 
+in
 {
   inherit (docs) manPages;
 

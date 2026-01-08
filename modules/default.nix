@@ -22,13 +22,7 @@ let
       pkgs.config.nix-on-droid
         or (throw "No config file found! Create one in ~/.config/nixpkgs/nix-on-droid.nix");
 
-  nodModules = import ./module-list.nix {
-    inherit
-      pkgs
-      isFlake
-      targetSystem
-      ;
-  };
+  nodModules = import ./module-list.nix { inherit pkgs isFlake targetSystem; };
 
   rawModule = evalModules {
     modules = [ configModule ] ++ nodModules;
@@ -40,11 +34,14 @@ let
 
   module =
     if failedAssertions != [ ] then
-      throw "\nFailed assertions:\n${concatMapStringsSep "\n" (x: "- ${x}") failedAssertions}"
+      throw ''
+
+        Failed assertions:
+        ${concatMapStringsSep "\n" (x: "- ${x}") failedAssertions}''
     else
       showWarnings rawModule.config.warnings rawModule;
-in
 
+in
 {
   inherit (module.config.build) activationPackage;
   inherit (module) config options;
